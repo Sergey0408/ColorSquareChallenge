@@ -13,7 +13,8 @@ class ColorSquaresGame {
         this.speeds = {
             slow: 20,
             medium: 30,
-            fast: 40
+            fast: 40,
+            veryfast: 60
         };
         this.currentSpeed = this.speeds.slow;
         this.squares = {
@@ -36,14 +37,14 @@ class ColorSquaresGame {
         this.canvas.width = containerWidth * 1.5;
         this.canvas.height = containerHeight * 1.5;
 
-        // Уменьшаем размер квадратов на 80%
-        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4) * 0.2;
+        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
     }
 
     setupEventListeners() {
         document.getElementById('speed1').addEventListener('click', () => this.setSpeed('slow'));
         document.getElementById('speed2').addEventListener('click', () => this.setSpeed('medium'));
         document.getElementById('speed3').addEventListener('click', () => this.setSpeed('fast'));
+        document.getElementById('speed4').addEventListener('click', () => this.setSpeed('veryfast'));
 
         document.getElementById('rounds10').addEventListener('click', () => this.setMaxAttempts(10));
         document.getElementById('rounds20').addEventListener('click', () => this.setMaxAttempts(20));
@@ -113,7 +114,8 @@ class ColorSquaresGame {
         const speeds = {
             'slow': this.speeds.slow,
             'medium': this.speeds.medium,
-            'fast': this.speeds.fast
+            'fast': this.speeds.fast,
+            'veryfast': this.speeds.veryfast
         };
         this.currentSpeed = speeds[speed];
 
@@ -132,7 +134,6 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        // Сдвигаем квадраты от кнопок (увеличиваем отступ слева)
         this.squares = {
             bottom: [
                 {
@@ -160,7 +161,6 @@ class ColorSquaresGame {
         if (this.gameActive && this.squares) {
             if (this.squares.bottom) {
                 this.squares.bottom.forEach(square => {
-                    // Добавляем закругление углов
                     this.ctx.beginPath();
                     this.ctx.roundRect(square.x, square.y, this.squareSize, this.squareSize, 10);
                     this.ctx.fillStyle = square.color;
@@ -171,7 +171,6 @@ class ColorSquaresGame {
             }
 
             if (this.squares.falling) {
-                // Добавляем закругление углов для падающего квадрата
                 this.ctx.beginPath();
                 this.ctx.roundRect(
                     this.squares.falling.x,
