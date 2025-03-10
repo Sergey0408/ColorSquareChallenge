@@ -88,7 +88,7 @@ class ColorSquaresGame {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
-        this.draw(); // Clear the canvas
+        this.draw();
     }
 
     setSpeed(speed) {
@@ -114,37 +114,41 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        this.squares.bottom = [
-            {
-                x: this.canvas.width * 0.25 - this.squareSize / 2,
-                y: this.canvas.height - this.squareSize * 1.5,
-                color: color1
-            },
-            {
-                x: this.canvas.width * 0.75 - this.squareSize / 2,
-                y: this.canvas.height - this.squareSize * 1.5,
-                color: color2
+        // Пересоздаём объект squares полностью
+        this.squares = {
+            bottom: [
+                {
+                    x: this.canvas.width * 0.25 - this.squareSize / 2,
+                    y: this.canvas.height - this.squareSize * 1.5,
+                    color: color1
+                },
+                {
+                    x: this.canvas.width * 0.75 - this.squareSize / 2,
+                    y: this.canvas.height - this.squareSize * 1.5,
+                    color: color2
+                }
+            ],
+            falling: {
+                x: this.canvas.width / 2 - this.squareSize / 2,
+                y: 0,
+                color: Math.random() < 0.5 ? color1 : color2
             }
-        ];
-
-        this.squares.falling = {
-            x: this.canvas.width / 2 - this.squareSize / 2,
-            y: 0,
-            color: Math.random() < 0.5 ? color1 : color2
         };
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        if (this.gameActive) {
+        if (this.gameActive && this.squares) {
             // Draw bottom squares
-            this.squares.bottom.forEach(square => {
-                this.ctx.fillStyle = square.color;
-                this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
-                this.ctx.strokeStyle = '#000';
-                this.ctx.strokeRect(square.x, square.y, this.squareSize, this.squareSize);
-            });
+            if (this.squares.bottom) {
+                this.squares.bottom.forEach(square => {
+                    this.ctx.fillStyle = square.color;
+                    this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
+                    this.ctx.strokeStyle = '#000';
+                    this.ctx.strokeRect(square.x, square.y, this.squareSize, this.squareSize);
+                });
+            }
 
             // Draw falling square
             if (this.squares.falling) {
@@ -177,7 +181,7 @@ class ColorSquaresGame {
     }
 
     handleClick(e) {
-        if (!this.gameActive || !this.squares.falling) return;
+        if (!this.gameActive || !this.squares || !this.squares.falling || !this.squares.bottom) return;
 
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -188,13 +192,13 @@ class ColorSquaresGame {
             if (x >= square.x && x <= square.x + this.squareSize &&
                 y >= square.y && y <= square.y + this.squareSize) {
                 this.handleChoice(i);
-                return; // Добавляем return чтобы избежать множественных обработок
+                break;
             }
         }
     }
 
     handleChoice(choiceIndex) {
-        if (!this.gameActive) return;
+        if (!this.gameActive || !this.squares || !this.squares.falling || !this.squares.bottom) return;
 
         const chosenColor = this.squares.bottom[choiceIndex].color;
         const correctColor = this.squares.falling.color;
