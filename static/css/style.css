@@ -21,16 +21,17 @@ body {
 }
 
 .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     position: absolute;
+    right: calc(100% + 10px);
     top: 20px;
-    right: 20px;
     z-index: 1;
+    min-width: 120px;
 }
 
 .stop-btn {
-    position: absolute;
-    left: -350px; 
-    top: 0;
     padding: 8px 20px;
     font-size: 18px;
     background: #ff4444;
@@ -40,6 +41,7 @@ body {
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s;
+    width: 100%;
 }
 
 .stop-btn:hover {
@@ -47,12 +49,10 @@ body {
 }
 
 .rounds-controls {
-    position: absolute;
-    left: -350px; 
-    top: 50px;
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%;
 }
 
 .rounds-btn {
@@ -64,6 +64,7 @@ body {
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s;
+    width: 100%;
 }
 
 .rounds-btn:hover {
@@ -80,12 +81,14 @@ body {
     font-size: 24px;
     color: #333;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .speed-controls {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%;
 }
 
 .speed-btn {
@@ -97,6 +100,7 @@ body {
     font-family: inherit;
     font-size: 16px;
     transition: all 0.3s;
+    width: 100%;
 }
 
 .speed-btn:hover {
@@ -153,4 +157,16 @@ body {
     font-weight: bold;
     color: #333;
     margin: 10px auto 0;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        margin-left: 140px;
+    }
+
+    .controls {
+        right: auto;
+        left: -130px;
+        min-width: 100px;
+    }
 }
