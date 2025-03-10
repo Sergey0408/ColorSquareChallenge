@@ -258,6 +258,7 @@ class ColorSquaresGame {
 
     updateScore() {
         document.getElementById('score').textContent = `${this.score} из ${this.maxAttempts}`;
+        document.getElementById('roundsRemaining').textContent = `${this.maxAttempts - this.attempts}`;
     }
 
     async startGame() {
