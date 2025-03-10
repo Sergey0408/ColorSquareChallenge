@@ -7,10 +7,10 @@ class ColorSquaresGame {
         this.maxAttempts = 10;
         this.colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
         this.speeds = {
-            slow: 26, 
-            medium: 39, 
-            fast: 52, 
-            veryfast: 78 
+            slow: 34, 
+            medium: 51, 
+            fast: 68, 
+            veryfast: 101 
         };
         this.currentSpeed = this.speeds.slow;
         this.squares = {
@@ -125,7 +125,7 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        const offset = -19; 
+        const offset = -50; // Увеличили смещение влево
         this.squares = {
             bottom: [
                 {
