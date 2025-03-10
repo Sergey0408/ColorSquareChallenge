@@ -142,8 +142,15 @@ body {
 }
 
 .rounds-remaining {
-    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    background: #FFD700;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
     color: #333;
-    margin-top: 10px;
-    text-align: center;
+    margin: 10px auto 0;
 }
