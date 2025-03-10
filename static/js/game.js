@@ -33,10 +33,10 @@ class ColorSquaresGame {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
 
-        this.canvas.width = containerWidth;
-        this.canvas.height = containerHeight;
+        this.canvas.width = containerWidth * 1.5; // Increased canvas width by 1.5 times
+        this.canvas.height = containerHeight * 1.5; // Increased canvas height by 1.5 times
 
-        this.squareSize = Math.min(this.canvas.width / 4, this.canvas.height / 8);
+        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4); // Increased square size by 2 times
     }
 
     setupEventListeners() {
@@ -44,7 +44,6 @@ class ColorSquaresGame {
         document.getElementById('speed2').addEventListener('click', () => this.setSpeed('medium'));
         document.getElementById('speed3').addEventListener('click', () => this.setSpeed('fast'));
 
-        // Добавляем обработчики для кнопок выбора количества раундов
         document.getElementById('rounds10').addEventListener('click', () => this.setMaxAttempts(10));
         document.getElementById('rounds20').addEventListener('click', () => this.setMaxAttempts(20));
         document.getElementById('rounds30').addEventListener('click', () => this.setMaxAttempts(30));
@@ -68,14 +67,12 @@ class ColorSquaresGame {
 
     setMaxAttempts(attempts) {
         this.maxAttempts = attempts;
-        // Обновляем все кнопки выбора раундов
         document.querySelectorAll('.rounds-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.textContent === attempts.toString()) {
                 btn.classList.add('active');
             }
         });
-        // Обновляем отображение счета
         this.updateScore();
     }
 
@@ -279,10 +276,7 @@ class ColorSquaresGame {
             this.animationFrameId = null;
         }
         window.gameAudio.playGameOver();
-        setTimeout(() => {
-            alert(`Игра окончена! Ваш результат: ${this.score} из ${this.maxAttempts}`);
-            this.showStartButton();
-        }, 500);
+        this.showStartButton();
     }
 
     gameLoop() {

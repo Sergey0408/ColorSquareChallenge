@@ -10,8 +10,8 @@ body {
 }
 
 .game-container {
-    width: 90vw;
-    max-width: 500px;
+    width: 135vw; /* Увеличено в 1.5 раза с 90vw */
+    max-width: 750px; /* Увеличено в 1.5 раза с 500px */
     aspect-ratio: 9/16;
     background: white;
     border-radius: 20px;
@@ -25,10 +25,10 @@ body {
     flex-direction: column;
     gap: 10px;
     position: absolute;
-    right: calc(100% + 10px);
+    right: 20px;
     top: 20px;
     z-index: 1;
-    min-width: 120px;
+    min-width: 60px; /* Уменьшено в 2 раза со 120px */
 }
 
 .stop-btn {
@@ -41,7 +41,7 @@ body {
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s;
-    width: 100%;
+    width: 60px; /* Уменьшено в 2 раза */
 }
 
 .stop-btn:hover {
@@ -52,7 +52,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 100%;
+    width: 60px; /* Уменьшено в 2 раза */
 }
 
 .rounds-btn {
@@ -88,7 +88,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 100%;
+    width: 60px; /* Уменьшено в 2 раза */
 }
 
 .speed-btn {
@@ -161,12 +161,12 @@ body {
 
 @media (max-width: 768px) {
     .game-container {
-        margin-left: 140px;
+        margin-left: 0;
+        width: 95vw;
     }
 
     .controls {
-        right: auto;
-        left: -130px;
-        min-width: 100px;
+        right: 10px;
+        min-width: 60px;
     }
 }
