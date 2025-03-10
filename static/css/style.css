@@ -125,6 +125,39 @@ body {
     color: white;
 }
 
+.difficulty-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 60px;
+}
+
+.difficulty-btn {
+    background: #fff;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    transition: all 0.3s;
+    width: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.difficulty-btn:hover {
+    background: #4CAF50;
+    color: white;
+}
+
+.difficulty-btn.active {
+    background: #4CAF50;
+    color: white;
+}
+
 .start-btn {
     position: absolute;
     left: 50%;

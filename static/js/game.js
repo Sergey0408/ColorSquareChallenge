@@ -5,11 +5,25 @@ class ColorSquaresGame {
         this.score = 0;
         this.attempts = 0;
         this.maxAttempts = 10;
-        this.colors = [
-            '#FF0000', '#00FF00', '#0000FF', '#FFFF00',
-            '#FF00FF', '#00FFFF', '#FFA500', '#800080',
-            '#008000', '#FFC0CB'
-        ];
+        this.difficulty = 'easy';
+        this.difficultySettings = {
+            easy: {
+                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'],
+                squareSizeMultiplier: 1,
+                speedMultiplier: 1
+            },
+            medium: {
+                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
+                squareSizeMultiplier: 0.8,
+                speedMultiplier: 1.2
+            },
+            hard: {
+                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#800080', '#008000', '#FFC0CB'],
+                squareSizeMultiplier: 0.6,
+                speedMultiplier: 1.5
+            }
+        };
+        this.colors = this.difficultySettings[this.difficulty].colors;
         this.speeds = {
             slow: 20,
             medium: 30,
@@ -37,7 +51,8 @@ class ColorSquaresGame {
         this.canvas.width = containerWidth * 1.5;
         this.canvas.height = containerHeight * 1.5;
 
-        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
+        const baseSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
+        this.squareSize = baseSize * this.difficultySettings[this.difficulty].squareSizeMultiplier;
     }
 
     setupEventListeners() {
@@ -51,20 +66,34 @@ class ColorSquaresGame {
         document.getElementById('rounds30').addEventListener('click', () => this.setMaxAttempts(30));
         document.getElementById('rounds40').addEventListener('click', () => this.setMaxAttempts(40));
 
-        document.getElementById('stopButton').addEventListener('click', () => {
-            this.stopGame();
-        });
+        // Добавляем обработчики для кнопок сложности
+        document.getElementById('easy').addEventListener('click', () => this.setDifficulty('easy'));
+        document.getElementById('medium').addEventListener('click', () => this.setDifficulty('medium'));
+        document.getElementById('hard').addEventListener('click', () => this.setDifficulty('hard'));
 
+        document.getElementById('stopButton').addEventListener('click', () => this.stopGame());
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
-
-        window.addEventListener('resize', () => {
-            this.initializeCanvas();
-        });
-
+        window.addEventListener('resize', () => this.initializeCanvas());
         document.getElementById('startButton').addEventListener('click', () => {
             this.hideStartButton();
             this.startGame();
         });
+    }
+
+    setDifficulty(level) {
+        this.difficulty = level;
+        this.colors = this.difficultySettings[level].colors;
+
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.id === level) {
+                btn.classList.add('active');
+            }
+        });
+
+        if (this.gameActive) {
+            this.createNewRound();
+        }
     }
 
     setMaxAttempts(attempts) {
@@ -190,7 +219,8 @@ class ColorSquaresGame {
     update() {
         if (!this.squares.falling || !this.gameActive) return;
 
-        this.squares.falling.y += this.currentSpeed * 0.1;
+        const speedMultiplier = this.difficultySettings[this.difficulty].speedMultiplier;
+        this.squares.falling.y += this.currentSpeed * 0.1 * speedMultiplier;
 
         if (this.squares.falling.y >= this.canvas.height - this.squareSize * 1.5) {
             this.handleMiss();
