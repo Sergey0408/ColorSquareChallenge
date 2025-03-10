@@ -12,7 +12,7 @@ body {
 .game-container {
     width: 90vw;
     max-width: 500px;
-    aspect-ratio: 9/16;
+    aspect-ratio: 9/8; /* Changed from 9/16 to 9/8 to reduce height by half */
     background: white;
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -25,6 +25,25 @@ body {
     top: 20px;
     right: 20px;
     z-index: 1;
+}
+
+.stop-btn {
+    position: absolute;
+    left: -380px;
+    top: 0;
+    padding: 8px 20px;
+    font-size: 18px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.stop-btn:hover {
+    background: #cc0000;
 }
 
 .score {

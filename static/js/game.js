@@ -20,6 +20,7 @@ class ColorSquaresGame {
             bottom: []
         };
         this.gameActive = false;
+        this.animationFrameId = null;
 
         this.initializeCanvas();
         this.setupEventListeners();
@@ -42,6 +43,10 @@ class ColorSquaresGame {
         document.getElementById('speed2').addEventListener('click', () => this.setSpeed('medium'));
         document.getElementById('speed3').addEventListener('click', () => this.setSpeed('fast'));
 
+        document.getElementById('stopButton').addEventListener('click', () => {
+            this.stopGame();
+        });
+
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
         window.addEventListener('resize', () => {
@@ -58,11 +63,27 @@ class ColorSquaresGame {
         const startButton = document.getElementById('startButton');
         startButton.classList.remove('hidden');
         this.gameActive = false;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
     }
 
     hideStartButton() {
         const startButton = document.getElementById('startButton');
         startButton.classList.add('hidden');
+    }
+
+    stopGame() {
+        this.gameActive = false;
+        this.showStartButton();
+        this.score = 0;
+        this.attempts = 0;
+        this.updateScore();
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
     }
 
     setSpeed(speed) {
@@ -209,6 +230,10 @@ class ColorSquaresGame {
 
     endGame() {
         this.gameActive = false;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
         setTimeout(() => {
             alert(`Игра окончена! Ваш результат: ${this.score} из 10`);
             this.showStartButton();
@@ -216,9 +241,11 @@ class ColorSquaresGame {
     }
 
     gameLoop() {
+        if (!this.gameActive) return;
+
         this.update();
         this.draw();
-        requestAnimationFrame(() => this.gameLoop());
+        this.animationFrameId = requestAnimationFrame(() => this.gameLoop());
     }
 }
 
