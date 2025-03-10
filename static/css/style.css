@@ -12,7 +12,7 @@ body {
 .game-container {
     width: 90vw;
     max-width: 500px;
-    aspect-ratio: 9/8;
+    aspect-ratio: 9/16;
     background: white;
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
