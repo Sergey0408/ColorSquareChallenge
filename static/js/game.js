@@ -34,7 +34,7 @@ class ColorSquaresGame {
         this.canvas.height = containerHeight * 1.5;
 
         const baseSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
-        this.squareSize = baseSize * 0.8; // Уменьшаем размер квадратов на 20%
+        this.squareSize = baseSize * 0.8; 
     }
 
     setupEventListeners() {
@@ -125,11 +125,11 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        const offset = -125; // Увеличили смещение влево
+        const offset = -125; 
         this.squares = {
             bottom: [
                 {
-                    x: (this.canvas.width * 0.35 + offset) - this.squareSize / 2,
+                    x: (this.canvas.width * 0.35 + offset + 19) - this.squareSize / 2, 
                     y: this.canvas.height - this.squareSize * 1.5,
                     color: color1
                 },
@@ -270,7 +270,21 @@ class ColorSquaresGame {
             this.animationFrameId = null;
         }
         window.gameAudio.playGameOver();
-        this.showStartButton();
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.font = 'bold 36px Comic Sans MS';
+        this.ctx.fillStyle = '#4CAF50';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText(
+            `Твой результат: ${this.score} из ${this.maxAttempts}`,
+            this.canvas.width / 2,
+            this.canvas.height / 2
+        );
+
+        setTimeout(() => {
+            this.showStartButton();
+        }, 4000);
     }
 
     gameLoop() {
