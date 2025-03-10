@@ -271,10 +271,8 @@ class ColorSquaresGame {
         }
         window.gameAudio.playGameOver();
 
+        // Очищаем canvas и добавляем полупрозрачный фон
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.draw(); // Clear any remaining game elements
-
-        // Добавляем полупрозрачный фон
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
