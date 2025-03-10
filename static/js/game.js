@@ -79,11 +79,16 @@ class ColorSquaresGame {
         this.showStartButton();
         this.score = 0;
         this.attempts = 0;
+        this.squares = {
+            falling: null,
+            bottom: []
+        };
         this.updateScore();
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
+        this.draw(); // Clear the canvas
     }
 
     setSpeed(speed) {
@@ -178,15 +183,19 @@ class ColorSquaresGame {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        this.squares.bottom.forEach((square, index) => {
+        for (let i = 0; i < this.squares.bottom.length; i++) {
+            const square = this.squares.bottom[i];
             if (x >= square.x && x <= square.x + this.squareSize &&
                 y >= square.y && y <= square.y + this.squareSize) {
-                this.handleChoice(index);
+                this.handleChoice(i);
+                return; // Добавляем return чтобы избежать множественных обработок
             }
-        });
+        }
     }
 
     handleChoice(choiceIndex) {
+        if (!this.gameActive) return;
+
         const chosenColor = this.squares.bottom[choiceIndex].color;
         const correctColor = this.squares.falling.color;
 
@@ -205,6 +214,8 @@ class ColorSquaresGame {
     }
 
     handleMiss() {
+        if (!this.gameActive) return;
+
         this.attempts++;
         this.updateScore();
 
