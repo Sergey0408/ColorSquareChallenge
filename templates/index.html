@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветные квадраты - Детская игра</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <div class="controls">
+            <div class="score">Счет: <span id="score">0 из 10</span></div>
+            <div class="speed-controls">
+                <button id="speed1" class="speed-btn active">Медленно</button>
+                <button id="speed2" class="speed-btn">Средне</button>
+                <button id="speed3" class="speed-btn">Быстро</button>
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
