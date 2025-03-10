@@ -10,9 +10,9 @@ class ColorSquaresGame {
             '#008000', '#FFC0CB'
         ];
         this.speeds = {
-            slow: 3,
-            medium: 10,
-            fast: 20
+            slow: 20,
+            medium: 30,
+            fast: 40
         };
         this.currentSpeed = this.speeds.slow;
         this.squares = {
