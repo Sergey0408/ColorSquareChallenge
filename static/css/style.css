@@ -41,7 +41,11 @@ body {
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s;
-    width: 60px; /* Уменьшено в 2 раза */
+    width: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .stop-btn:hover {
@@ -78,10 +82,14 @@ body {
 }
 
 .score {
-    font-size: 24px;
+    font-size: 19px; /* Уменьшено на 80% с 24px */
     color: #333;
     margin-bottom: 10px;
     text-align: center;
+}
+
+.score span {
+    color: #FFA500; /* Оранжевый цвет для цифр */
 }
 
 .speed-controls {
@@ -100,7 +108,11 @@ body {
     font-family: inherit;
     font-size: 16px;
     transition: all 0.3s;
-    width: 100%;
+    width: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .speed-btn:hover {

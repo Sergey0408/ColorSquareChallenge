@@ -33,10 +33,11 @@ class ColorSquaresGame {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
 
-        this.canvas.width = containerWidth * 1.5; // Increased canvas width by 1.5 times
-        this.canvas.height = containerHeight * 1.5; // Increased canvas height by 1.5 times
+        this.canvas.width = containerWidth * 1.5;
+        this.canvas.height = containerHeight * 1.5;
 
-        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4); // Increased square size by 2 times
+        // Уменьшаем размер квадратов на 80%
+        this.squareSize = Math.min(this.canvas.width / 2, this.canvas.height / 4) * 0.2;
     }
 
     setupEventListeners() {
@@ -131,21 +132,22 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
+        // Сдвигаем квадраты от кнопок (увеличиваем отступ слева)
         this.squares = {
             bottom: [
                 {
-                    x: this.canvas.width * 0.25 - this.squareSize / 2,
+                    x: this.canvas.width * 0.35 - this.squareSize / 2,
                     y: this.canvas.height - this.squareSize * 1.5,
                     color: color1
                 },
                 {
-                    x: this.canvas.width * 0.75 - this.squareSize / 2,
+                    x: this.canvas.width * 0.85 - this.squareSize / 2,
                     y: this.canvas.height - this.squareSize * 1.5,
                     color: color2
                 }
             ],
             falling: {
-                x: this.canvas.width / 2 - this.squareSize / 2,
+                x: this.canvas.width * 0.6 - this.squareSize / 2,
                 y: 0,
                 color: Math.random() < 0.5 ? color1 : color2
             }
@@ -158,28 +160,30 @@ class ColorSquaresGame {
         if (this.gameActive && this.squares) {
             if (this.squares.bottom) {
                 this.squares.bottom.forEach(square => {
+                    // Добавляем закругление углов
+                    this.ctx.beginPath();
+                    this.ctx.roundRect(square.x, square.y, this.squareSize, this.squareSize, 10);
                     this.ctx.fillStyle = square.color;
-                    this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
+                    this.ctx.fill();
                     this.ctx.strokeStyle = '#000';
-                    this.ctx.strokeRect(square.x, square.y, this.squareSize, this.squareSize);
+                    this.ctx.stroke();
                 });
             }
 
             if (this.squares.falling) {
+                // Добавляем закругление углов для падающего квадрата
+                this.ctx.beginPath();
+                this.ctx.roundRect(
+                    this.squares.falling.x,
+                    this.squares.falling.y,
+                    this.squareSize,
+                    this.squareSize,
+                    10
+                );
                 this.ctx.fillStyle = this.squares.falling.color;
-                this.ctx.fillRect(
-                    this.squares.falling.x,
-                    this.squares.falling.y,
-                    this.squareSize,
-                    this.squareSize
-                );
+                this.ctx.fill();
                 this.ctx.strokeStyle = '#000';
-                this.ctx.strokeRect(
-                    this.squares.falling.x,
-                    this.squares.falling.y,
-                    this.squareSize,
-                    this.squareSize
-                );
+                this.ctx.stroke();
             }
         }
     }
