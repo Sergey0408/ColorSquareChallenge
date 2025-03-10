@@ -77,6 +77,7 @@ class ColorSquaresGame {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     hideStartButton() {
@@ -86,7 +87,10 @@ class ColorSquaresGame {
 
     stopGame() {
         this.gameActive = false;
-        this.showStartButton();
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
         this.score = 0;
         this.attempts = 0;
         this.squares = {
@@ -94,11 +98,9 @@ class ColorSquaresGame {
             bottom: []
         };
         this.updateScore();
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
-            this.animationFrameId = null;
-        }
-        this.draw();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const startButton = document.getElementById('startButton');
+        startButton.classList.remove('hidden');
     }
 
     setSpeed(speed) {
@@ -270,7 +272,9 @@ class ColorSquaresGame {
             this.animationFrameId = null;
         }
         window.gameAudio.playGameOver();
-        this.showStartButton();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const startButton = document.getElementById('startButton');
+        startButton.classList.remove('hidden');
     }
 
     gameLoop() {
