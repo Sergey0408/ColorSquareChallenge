@@ -34,7 +34,7 @@ class ColorSquaresGame {
         this.canvas.height = containerHeight * 1.5;
 
         const baseSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
-        this.squareSize = baseSize; // Removed difficulty multiplier
+        this.squareSize = baseSize; 
     }
 
     setupEventListeners() {
@@ -125,7 +125,7 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        const offset = 19;
+        const offset = -19; 
         this.squares = {
             bottom: [
                 {
@@ -182,7 +182,7 @@ class ColorSquaresGame {
     update() {
         if (!this.squares.falling || !this.gameActive) return;
 
-        this.squares.falling.y += this.currentSpeed * 0.1; //Removed speedMultiplier
+        this.squares.falling.y += this.currentSpeed * 0.1; 
         if (this.squares.falling.y >= this.canvas.height - this.squareSize * 1.5) {
             this.handleMiss();
         }

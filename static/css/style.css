@@ -89,7 +89,8 @@ body {
 }
 
 .score span {
-    color: #FFA500; /* Оранжевый цвет для цифр */
+    color: #FF0000; /* Красный цвет для цифр */
+    font-weight: bold;
 }
 
 .speed-controls {
