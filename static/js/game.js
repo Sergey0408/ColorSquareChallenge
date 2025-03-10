@@ -47,6 +47,7 @@ class ColorSquaresGame {
             this.stopGame();
         });
 
+        // Добавляем привязку к this для handleClick
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
         window.addEventListener('resize', () => {
@@ -187,10 +188,16 @@ class ColorSquaresGame {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
+        // Scale mouse coordinates if canvas is scaled
+        const scaleX = this.canvas.width / rect.width;
+        const scaleY = this.canvas.height / rect.height;
+        const canvasX = x * scaleX;
+        const canvasY = y * scaleY;
+
         for (let i = 0; i < this.squares.bottom.length; i++) {
             const square = this.squares.bottom[i];
-            if (x >= square.x && x <= square.x + this.squareSize &&
-                y >= square.y && y <= square.y + this.squareSize) {
+            if (canvasX >= square.x && canvasX <= square.x + this.squareSize &&
+                canvasY >= square.y && canvasY <= square.y + this.squareSize) {
                 this.handleChoice(i);
                 break;
             }
