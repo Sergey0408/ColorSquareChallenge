@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Цветные квадраты - Детская игра</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 </head>
 <body>
     <div class="game-container">
@@ -20,6 +21,7 @@
         <button id="startButton" class="start-btn">Начать игру</button>
         <canvas id="gameCanvas"></canvas>
     </div>
+    <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </body>
 </html>

@@ -197,7 +197,7 @@ class ColorSquaresGame {
         }
     }
 
-    handleChoice(choiceIndex) {
+    async handleChoice(choiceIndex) {
         if (!this.gameActive || !this.squares || !this.squares.falling || !this.squares.bottom) return;
 
         const chosenColor = this.squares.bottom[choiceIndex].color;
@@ -205,6 +205,9 @@ class ColorSquaresGame {
 
         if (chosenColor === correctColor) {
             this.score++;
+            window.gameAudio.playCorrect();
+        } else {
+            window.gameAudio.playIncorrect();
         }
 
         this.attempts++;
@@ -220,6 +223,7 @@ class ColorSquaresGame {
     handleMiss() {
         if (!this.gameActive) return;
 
+        window.gameAudio.playIncorrect();
         this.attempts++;
         this.updateScore();
 
@@ -234,7 +238,9 @@ class ColorSquaresGame {
         document.getElementById('score').textContent = `${this.score} из 10`;
     }
 
-    startGame() {
+    async startGame() {
+        await window.gameAudio.init();
+        window.gameAudio.playGameStart();
         this.score = 0;
         this.attempts = 0;
         this.gameActive = true;
@@ -249,6 +255,7 @@ class ColorSquaresGame {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
+        window.gameAudio.playGameOver();
         setTimeout(() => {
             alert(`Игра окончена! Ваш результат: ${this.score} из 10`);
             this.showStartButton();
