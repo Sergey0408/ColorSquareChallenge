@@ -4,6 +4,7 @@ class ColorSquaresGame {
         this.ctx = this.canvas.getContext('2d');
         this.score = 0;
         this.attempts = 0;
+        this.maxAttempts = 10;
         this.colors = [
             '#FF0000', '#00FF00', '#0000FF', '#FFFF00',
             '#FF00FF', '#00FFFF', '#FFA500', '#800080',
@@ -43,11 +44,16 @@ class ColorSquaresGame {
         document.getElementById('speed2').addEventListener('click', () => this.setSpeed('medium'));
         document.getElementById('speed3').addEventListener('click', () => this.setSpeed('fast'));
 
+        // Добавляем обработчики для кнопок выбора количества раундов
+        document.getElementById('rounds10').addEventListener('click', () => this.setMaxAttempts(10));
+        document.getElementById('rounds20').addEventListener('click', () => this.setMaxAttempts(20));
+        document.getElementById('rounds30').addEventListener('click', () => this.setMaxAttempts(30));
+        document.getElementById('rounds40').addEventListener('click', () => this.setMaxAttempts(40));
+
         document.getElementById('stopButton').addEventListener('click', () => {
             this.stopGame();
         });
 
-        // Добавляем привязку к this для handleClick
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
         window.addEventListener('resize', () => {
@@ -58,6 +64,19 @@ class ColorSquaresGame {
             this.hideStartButton();
             this.startGame();
         });
+    }
+
+    setMaxAttempts(attempts) {
+        this.maxAttempts = attempts;
+        // Обновляем все кнопки выбора раундов
+        document.querySelectorAll('.rounds-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent === attempts.toString()) {
+                btn.classList.add('active');
+            }
+        });
+        // Обновляем отображение счета
+        this.updateScore();
     }
 
     showStartButton() {
@@ -115,7 +134,6 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        // Пересоздаём объект squares полностью
         this.squares = {
             bottom: [
                 {
@@ -141,7 +159,6 @@ class ColorSquaresGame {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         if (this.gameActive && this.squares) {
-            // Draw bottom squares
             if (this.squares.bottom) {
                 this.squares.bottom.forEach(square => {
                     this.ctx.fillStyle = square.color;
@@ -151,7 +168,6 @@ class ColorSquaresGame {
                 });
             }
 
-            // Draw falling square
             if (this.squares.falling) {
                 this.ctx.fillStyle = this.squares.falling.color;
                 this.ctx.fillRect(
@@ -188,7 +204,6 @@ class ColorSquaresGame {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Scale mouse coordinates if canvas is scaled
         const scaleX = this.canvas.width / rect.width;
         const scaleY = this.canvas.height / rect.height;
         const canvasX = x * scaleX;
@@ -220,7 +235,7 @@ class ColorSquaresGame {
         this.attempts++;
         this.updateScore();
 
-        if (this.attempts >= 10) {
+        if (this.attempts >= this.maxAttempts) {
             this.endGame();
         } else {
             this.createNewRound();
@@ -234,7 +249,7 @@ class ColorSquaresGame {
         this.attempts++;
         this.updateScore();
 
-        if (this.attempts >= 10) {
+        if (this.attempts >= this.maxAttempts) {
             this.endGame();
         } else {
             this.createNewRound();
@@ -242,7 +257,7 @@ class ColorSquaresGame {
     }
 
     updateScore() {
-        document.getElementById('score').textContent = `${this.score} из 10`;
+        document.getElementById('score').textContent = `${this.score} из ${this.maxAttempts}`;
     }
 
     async startGame() {
@@ -264,7 +279,7 @@ class ColorSquaresGame {
         }
         window.gameAudio.playGameOver();
         setTimeout(() => {
-            alert(`Игра окончена! Ваш результат: ${this.score} из 10`);
+            alert(`Игра окончена! Ваш результат: ${this.score} из ${this.maxAttempts}`);
             this.showStartButton();
         }, 500);
     }
@@ -278,7 +293,6 @@ class ColorSquaresGame {
     }
 }
 
-// Start the game when the page loads
 window.addEventListener('load', () => {
     new ColorSquaresGame();
 });
