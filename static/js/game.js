@@ -7,10 +7,10 @@ class ColorSquaresGame {
         this.maxAttempts = 10;
         this.colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
         this.speeds = {
-            slow: 34, 
-            medium: 51, 
-            fast: 68, 
-            veryfast: 101 
+            slow: 34,
+            medium: 51,
+            fast: 68,
+            veryfast: 101
         };
         this.currentSpeed = this.speeds.slow;
         this.squares = {
@@ -34,7 +34,7 @@ class ColorSquaresGame {
         this.canvas.height = containerHeight * 1.5;
 
         const baseSize = Math.min(this.canvas.width / 2, this.canvas.height / 4);
-        this.squareSize = baseSize; 
+        this.squareSize = baseSize * 0.8; // Уменьшаем размер квадратов на 20%
     }
 
     setupEventListeners() {
@@ -125,7 +125,7 @@ class ColorSquaresGame {
             color2 = this.getRandomColor();
         } while (color2 === color1);
 
-        const offset = -50; // Увеличили смещение влево
+        const offset = -125; // Увеличили смещение влево
         this.squares = {
             bottom: [
                 {
@@ -182,7 +182,7 @@ class ColorSquaresGame {
     update() {
         if (!this.squares.falling || !this.gameActive) return;
 
-        this.squares.falling.y += this.currentSpeed * 0.1; 
+        this.squares.falling.y += this.currentSpeed * 0.1;
         if (this.squares.falling.y >= this.canvas.height - this.squareSize * 1.5) {
             this.handleMiss();
         }
