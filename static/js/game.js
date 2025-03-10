@@ -20,38 +20,49 @@ class ColorSquaresGame {
             bottom: []
         };
         this.gameActive = false;
-        
+
         this.initializeCanvas();
         this.setupEventListeners();
-        this.startGame();
+        this.showStartButton();
     }
 
     initializeCanvas() {
-        // Set canvas size to match container's aspect ratio (9:16)
         const container = this.canvas.parentElement;
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
-        
+
         this.canvas.width = containerWidth;
         this.canvas.height = containerHeight;
-        
-        // Calculate square sizes based on canvas dimensions
+
         this.squareSize = Math.min(this.canvas.width / 4, this.canvas.height / 8);
     }
 
     setupEventListeners() {
-        // Speed control buttons
         document.getElementById('speed1').addEventListener('click', () => this.setSpeed('slow'));
         document.getElementById('speed2').addEventListener('click', () => this.setSpeed('medium'));
         document.getElementById('speed3').addEventListener('click', () => this.setSpeed('fast'));
 
-        // Canvas click handler
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
-        // Window resize handler
         window.addEventListener('resize', () => {
             this.initializeCanvas();
         });
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            this.hideStartButton();
+            this.startGame();
+        });
+    }
+
+    showStartButton() {
+        const startButton = document.getElementById('startButton');
+        startButton.classList.remove('hidden');
+        this.gameActive = false;
+    }
+
+    hideStartButton() {
+        const startButton = document.getElementById('startButton');
+        startButton.classList.add('hidden');
     }
 
     setSpeed(speed) {
@@ -61,8 +72,7 @@ class ColorSquaresGame {
             'fast': this.speeds.fast
         };
         this.currentSpeed = speeds[speed];
-        
-        // Update button states
+
         document.querySelectorAll('.speed-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`speed${Object.keys(speeds).indexOf(speed) + 1}`).classList.add('active');
     }
@@ -72,7 +82,6 @@ class ColorSquaresGame {
     }
 
     createNewRound() {
-        // Create bottom squares
         const color1 = this.getRandomColor();
         let color2;
         do {
@@ -92,7 +101,6 @@ class ColorSquaresGame {
             }
         ];
 
-        // Create falling square
         this.squares.falling = {
             x: this.canvas.width / 2 - this.squareSize / 2,
             y: 0,
@@ -101,43 +109,42 @@ class ColorSquaresGame {
     }
 
     draw() {
-        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw bottom squares
-        this.squares.bottom.forEach(square => {
-            this.ctx.fillStyle = square.color;
-            this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
-            this.ctx.strokeStyle = '#000';
-            this.ctx.strokeRect(square.x, square.y, this.squareSize, this.squareSize);
-        });
+        if (this.gameActive) {
+            // Draw bottom squares
+            this.squares.bottom.forEach(square => {
+                this.ctx.fillStyle = square.color;
+                this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
+                this.ctx.strokeStyle = '#000';
+                this.ctx.strokeRect(square.x, square.y, this.squareSize, this.squareSize);
+            });
 
-        // Draw falling square
-        if (this.squares.falling) {
-            this.ctx.fillStyle = this.squares.falling.color;
-            this.ctx.fillRect(
-                this.squares.falling.x,
-                this.squares.falling.y,
-                this.squareSize,
-                this.squareSize
-            );
-            this.ctx.strokeStyle = '#000';
-            this.ctx.strokeRect(
-                this.squares.falling.x,
-                this.squares.falling.y,
-                this.squareSize,
-                this.squareSize
-            );
+            // Draw falling square
+            if (this.squares.falling) {
+                this.ctx.fillStyle = this.squares.falling.color;
+                this.ctx.fillRect(
+                    this.squares.falling.x,
+                    this.squares.falling.y,
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.ctx.strokeStyle = '#000';
+                this.ctx.strokeRect(
+                    this.squares.falling.x,
+                    this.squares.falling.y,
+                    this.squareSize,
+                    this.squareSize
+                );
+            }
         }
     }
 
     update() {
         if (!this.squares.falling || !this.gameActive) return;
 
-        // Move falling square down
         this.squares.falling.y += this.currentSpeed * 0.1;
 
-        // Check if falling square reached bottom
         if (this.squares.falling.y >= this.canvas.height - this.squareSize * 1.5) {
             this.handleMiss();
         }
@@ -150,7 +157,6 @@ class ColorSquaresGame {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Check which bottom square was clicked
         this.squares.bottom.forEach((square, index) => {
             if (x >= square.x && x <= square.x + this.squareSize &&
                 y >= square.y && y <= square.y + this.squareSize) {
@@ -166,7 +172,7 @@ class ColorSquaresGame {
         if (chosenColor === correctColor) {
             this.score++;
         }
-        
+
         this.attempts++;
         this.updateScore();
 
@@ -205,7 +211,7 @@ class ColorSquaresGame {
         this.gameActive = false;
         setTimeout(() => {
             alert(`Игра окончена! Ваш результат: ${this.score} из 10`);
-            this.startGame();
+            this.showStartButton();
         }, 500);
     }
 
